@@ -16,6 +16,8 @@ Full functional/technical specs and execution plans that drove this implementati
   Firebase Storage — the API only ever stores the resulting download URL
 - Dashboard with totals plus a daily-average line chart of training self-evaluation scores over
   the last 30 days
+- Floating "AI Coach" chat widget, backed by the OpenAI API — answers jiu-jitsu questions in
+  whatever language they're asked in; nothing about the conversation is persisted anywhere
 - Responsive Angular Material UI with a collapsible sidebar
 
 ## Stack
@@ -41,6 +43,7 @@ Full functional/technical specs and execution plans that drove this implementati
 - A local SQL Server instance (developed against SQL Server Express)
 - A Firebase project with Storage enabled, if you want media uploads to work (see
   `frontend/bjj-manager-app/src/environments/environment.ts` for where the config goes)
+- An OpenAI API key, if you want the AI Coach chat to work (see step 2)
 
 ## 1. Database setup
 
@@ -59,9 +62,13 @@ runs (see step 2).
 
 ```
 cd backend
-dotnet test        # 37 tests: domain, application (unit) + WebApi (integration, SQLite in-memory)
+cp src/BJJManager.WebApi/appsettings.Local.json.example src/BJJManager.WebApi/appsettings.Local.json
+dotnet test        # 45 tests: domain, application (unit) + WebApi (integration, SQLite in-memory)
 dotnet run --project src/BJJManager.WebApi
 ```
+
+`appsettings.Local.json` is gitignored — put your own `OpenAI:ApiKey` in the copy for the AI Coach
+chat to work; the rest of the app works without it.
 
 API listens on `http://localhost:5144` by default (see `Properties/launchSettings.json`), with
 Swagger UI at `http://localhost:5144/swagger`.
@@ -72,7 +79,7 @@ Swagger UI at `http://localhost:5144/swagger`.
 cd frontend/bjj-manager-app
 cp src/environments/environment.example.ts src/environments/environment.ts
 npm install
-npm test -- --watch=false --browsers=ChromeHeadless   # 26 tests
+npm test -- --watch=false --browsers=ChromeHeadless   # 32 tests
 npm start
 ```
 

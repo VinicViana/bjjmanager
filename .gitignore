@@ -20,6 +20,9 @@ frontend/**/.angular/
 # Real Firebase config (contains project-specific keys) - copy environment.example.ts instead
 frontend/**/src/environments/environment.ts
 
+# Real OpenAI API key - copy appsettings.Local.json.example instead
+backend/**/appsettings.Local.json
+
 # IDE
 .vs/
 .vscode/

@@ -47,6 +47,14 @@ public class ExceptionHandlingMiddleware
                 statusCode = StatusCodes.Status401Unauthorized;
                 problemDetails = new ProblemDetails { Status = statusCode, Title = unauthorizedAccessException.Message };
                 break;
+            case ExternalServiceException:
+                statusCode = StatusCodes.Status502BadGateway;
+                problemDetails = new ProblemDetails
+                {
+                    Status = statusCode,
+                    Title = "The AI coach is unavailable right now, try again in a moment."
+                };
+                break;
             default:
                 statusCode = StatusCodes.Status500InternalServerError;
                 problemDetails = new ProblemDetails { Status = statusCode, Title = "An unexpected error occurred." };

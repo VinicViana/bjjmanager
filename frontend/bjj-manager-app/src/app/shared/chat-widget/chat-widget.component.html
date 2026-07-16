@@ -1,0 +1,58 @@
+<div class="chat-widget">
+  @if (!isOpen()) {
+    <button mat-fab class="chat-fab" color="primary" (click)="toggle()" aria-label="Open AI Coach chat">
+      <mat-icon>smart_toy</mat-icon>
+    </button>
+  } @else {
+    <div class="chat-panel">
+      <div class="chat-panel-header">
+        <div class="chat-panel-title">
+          <mat-icon>smart_toy</mat-icon>
+          <span>AI Coach</span>
+        </div>
+        <div class="chat-panel-actions">
+          <button mat-icon-button (click)="clear()" [disabled]="messages().length === 0" aria-label="Clear chat">
+            <mat-icon>delete_sweep</mat-icon>
+          </button>
+          <button mat-icon-button (click)="toggle()" aria-label="Close chat">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="chat-messages" #messagesContainer>
+        @if (messages().length === 0) {
+          <p class="chat-empty">Ask me anything about jiu-jitsu — techniques, positions, strategy, rules...</p>
+        }
+
+        @for (message of messages(); track $index) {
+          <div class="chat-bubble" [class.chat-bubble-user]="message.role === 'user'" [class.chat-bubble-assistant]="message.role === 'assistant'">
+            {{ message.content }}
+          </div>
+        }
+
+        @if (sending()) {
+          <div class="chat-bubble chat-bubble-assistant chat-bubble-typing">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        }
+      </div>
+
+      <form class="chat-input-row" (ngSubmit)="send()">
+        <input
+          class="chat-input"
+          [(ngModel)]="draft"
+          name="draft"
+          placeholder="Ask a jiu-jitsu question..."
+          [disabled]="sending()"
+          autocomplete="off"
+        />
+        <button mat-icon-button color="primary" type="submit" [disabled]="sending() || !draft.trim()" aria-label="Send">
+          <mat-icon>send</mat-icon>
+        </button>
+      </form>
+    </div>
+  }
+</div>

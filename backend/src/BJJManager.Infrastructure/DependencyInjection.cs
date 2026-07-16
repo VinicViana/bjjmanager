@@ -1,4 +1,5 @@
 using BJJManager.Application.Common.Interfaces;
+using BJJManager.Infrastructure.Ai;
 using BJJManager.Infrastructure.Identity;
 using BJJManager.Infrastructure.Persistence;
 using BJJManager.Infrastructure.Persistence.Repositories;
@@ -16,6 +17,7 @@ public static class DependencyInjection
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
+        services.Configure<OpenAiSettings>(configuration.GetSection("OpenAI"));
 
         services.AddHttpContextAccessor();
 
@@ -26,6 +28,11 @@ public static class DependencyInjection
         services.AddScoped<IPasswordHasher, EfPasswordHasher>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+        services.AddHttpClient<IAiChatClient, OpenAiChatClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.openai.com/v1/");
+        });
 
         return services;
     }

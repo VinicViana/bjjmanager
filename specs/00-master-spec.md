@@ -31,10 +31,13 @@ In scope, mapped onto BJJManager:
 
 1. **Authentication** — register (name + password only), login, JWT issuance.
 2. **Training Sessions** — CRUD + filtering by exact date / month / year; each session has optional
-   media metadata (no file upload — URLs only).
+   media (photos/videos uploaded client-side to Firebase Storage; the API stores the resulting URL).
 3. **Techniques Library** — CRUD; each technique has ordered steps (≥1, first step mandatory) and
-   optional media metadata.
-4. **Dashboard** — welcome message + totals.
+   optional media, same upload flow as Training Sessions.
+4. **Dashboard** — welcome message, totals, and a chart of daily-average training self-evaluation
+   scores over the last 30 days.
+5. **AI Chat** — ephemeral, single-purpose Q&A assistant for jiu-jitsu questions, backed by the
+   OpenAI API. See `04-ai-chat-execution-plan.md` for the full design.
 
 Every record in modules 2–3 is strictly scoped to its owning user. No sharing, no admin role.
 
@@ -73,7 +76,7 @@ validator — never in the entity, since the entity never sees the raw password 
 | Id | Guid (PK) | |
 | TrainingId | Guid (FK → TrainingSession, cascade delete) | |
 | FileName | string | required |
-| FileUrl | string | required, stored as plain string (no upload logic — out of scope, future Firebase Storage integration) |
+| FileUrl | string | required, stored as plain string — the download URL Firebase Storage returns after the client uploads the file directly (see §5) |
 | MediaType | enum `Image \| Video` | required |
 
 A training may have zero or many media entries.
@@ -147,6 +150,12 @@ Ownership violation policy: if a record exists but belongs to another user, the 
 | Verb | Route | Returns |
 |---|---|---|
 | GET | `/api/dashboard` | `{ userName, totalTrainings, totalTechniques }` |
+| GET | `/api/trainings/notes-summary` | daily-average self-evaluation for the last 30 days, fixed window, no filters — see `01-backend-execution-plan.md` |
+
+### 4.5 AI Chat (authenticated)
+| Verb | Route | Notes |
+|---|---|---|
+| POST | `/api/chat` | see `04-ai-chat-execution-plan.md` for the request/response shape and system prompt |
 
 ---
 
@@ -168,12 +177,15 @@ Ownership violation policy: if a record exists but belongs to another user, the 
 - **Media**: metadata only, no upload pipeline. `FileUrl` is a plain string produced by uploading
   the file client-side to Firebase Storage (config in `Chaves e StringConnections.txt`); the API
   never receives or stores the binary file itself.
+- **AI Chat**: the OpenAI API key lives only on the backend (`appsettings`/`Chaves e
+  StringConnections.txt` locally, never shipped to the frontend); the browser only ever talks to
+  `POST /api/chat`, never to OpenAI directly. Nothing about the conversation is persisted anywhere
+  — no database table, no server-side session. See `04-ai-chat-execution-plan.md`.
 - **Testing**: TDD across all layers; xUnit + FluentAssertions + NSubstitute (backend),
   Jasmine/Karma (frontend, Angular CLI default).
 - **No code comments** — enforced across all future implementation prompts.
 - **Repository layout**: monorepo, single git repository at the project root (see plans for folder
-  layout — `/backend`, `/frontend`, `/database`, plus this `/specs` folder and the eventual root
-  README).
+  layout — `/backend`, `/frontend`, plus this `/specs` folder and the root README).
 
 ---
 
@@ -190,3 +202,4 @@ Ownership violation policy: if a record exists but belongs to another user, the 
 - `01-backend-execution-plan.md`
 - `02-frontend-execution-plan.md`
 - `03-database-execution-plan.md`
+- `04-ai-chat-execution-plan.md`

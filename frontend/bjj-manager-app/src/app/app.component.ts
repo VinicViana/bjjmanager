@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { map } from 'rxjs';
 import { AuthService } from './core/auth/auth.service';
+import { ChatWidgetComponent } from './shared/chat-widget/chat-widget.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 
 @Component({
@@ -17,6 +18,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     RouterLink,
     RouterLinkActive,
     NavbarComponent,
+    ChatWidgetComponent,
     MatSidenavModule,
     MatButtonModule,
     MatIconModule

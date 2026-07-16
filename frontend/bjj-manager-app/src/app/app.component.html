@@ -31,3 +31,7 @@
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+@if (isAuthenticated()) {
+  <app-chat-widget></app-chat-widget>
+}

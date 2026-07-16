@@ -13,6 +13,8 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
+
 const string AngularCorsPolicy = "AngularDevClient";
 
 builder.Services.AddControllers(options => options.Filters.Add(new AuthorizeFilter()))
