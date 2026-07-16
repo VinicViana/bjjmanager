@@ -41,5 +41,5 @@ public class UpdateTaskRequest
     public TaskItemStatus Status { get; set; }
 
     [Required(ErrorMessage = "DueDate is required.")]
-    public DateOnly DueDate { get; set; }
+    public DateOnly DueDate { get; set; } 
 }
