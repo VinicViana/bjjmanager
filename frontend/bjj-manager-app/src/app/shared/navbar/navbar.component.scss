@@ -1,0 +1,76 @@
+.app-toolbar {
+  background: linear-gradient(135deg, #151a3b 0%, #232c66 55%, #303f9f 100%) !important;
+  color: #fff !important;
+  padding: 0 16px;
+  box-shadow: 0 2px 14px rgba(10, 14, 40, 0.35);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.menu-btn {
+  margin-right: 8px;
+  color: #fff;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+
+  mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.brand-icon {
+  color: #f5a623;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 4px;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #f5a623;
+  color: #1a2151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.welcome {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 420px) {
+  .brand span {
+    display: none;
+  }
+
+  .welcome {
+    display: none;
+  }
+
+  .app-toolbar {
+    padding: 0 10px;
+  }
+}

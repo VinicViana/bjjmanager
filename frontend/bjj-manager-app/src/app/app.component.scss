@@ -1,0 +1,55 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-shell {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: transparent;
+}
+
+.app-sidenav {
+  width: 240px;
+  background: linear-gradient(180deg, #151a3b 0%, #1e2557 100%);
+  border-right: none;
+  padding-top: 12px;
+}
+
+.side-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+}
+
+.side-nav-links a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-start;
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 10px;
+  height: 44px;
+  padding: 0 14px;
+  font-size: 0.9rem;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.side-nav-links a.active-link {
+  background: rgba(245, 166, 35, 0.18);
+  color: #fff;
+  box-shadow: inset 3px 0 0 #f5a623;
+}

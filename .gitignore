@@ -1,0 +1,30 @@
+# Secrets (not for source control - see specs/00-master-spec.md §5)
+Chaves e StringConnections.txt
+
+# Internal working docs - not part of the public project
+Net - BLA - Technical Interview Exercise - V6.pdf
+ProjectIdea.md.txt
+Prompt-Inicial
+database/
+
+# .NET
+backend/**/bin/
+backend/**/obj/
+*.user
+
+# Angular / Node
+frontend/**/node_modules/
+frontend/**/dist/
+frontend/**/.angular/
+
+# Real Firebase config (contains project-specific keys) - copy environment.example.ts instead
+frontend/**/src/environments/environment.ts
+
+# IDE
+.vs/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

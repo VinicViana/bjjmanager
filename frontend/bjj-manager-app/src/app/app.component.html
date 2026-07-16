@@ -1,0 +1,33 @@
+<app-navbar [showMenuButton]="isAuthenticated()" (menuToggle)="toggleSidenav()"></app-navbar>
+
+<mat-sidenav-container class="app-shell">
+  @if (isAuthenticated()) {
+    <mat-sidenav
+      class="app-sidenav"
+      [mode]="sidenavMode()"
+      [opened]="sidenavOpened()"
+      (openedChange)="sidenavOpened.set($event)"
+    >
+      <nav class="side-nav-links">
+        <a mat-button routerLink="/dashboard" routerLinkActive="active-link" (click)="closeOnHandset()">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </a>
+        <a mat-button routerLink="/trainings" routerLinkActive="active-link" (click)="closeOnHandset()">
+          <mat-icon>fitness_center</mat-icon>
+          <span>Trainings</span>
+        </a>
+        <a mat-button routerLink="/techniques" routerLinkActive="active-link" (click)="closeOnHandset()">
+          <mat-icon>self_improvement</mat-icon>
+          <span>Techniques</span>
+        </a>
+      </nav>
+    </mat-sidenav>
+  }
+
+  <mat-sidenav-content>
+    <main class="app-content">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

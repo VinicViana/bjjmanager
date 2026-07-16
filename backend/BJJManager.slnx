@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BJJManager.Application/BJJManager.Application.csproj" />
+    <Project Path="src/BJJManager.Domain/BJJManager.Domain.csproj" />
+    <Project Path="src/BJJManager.Infrastructure/BJJManager.Infrastructure.csproj" />
+    <Project Path="src/BJJManager.WebApi/BJJManager.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/BJJManager.Application.Tests/BJJManager.Application.Tests.csproj" />
+    <Project Path="tests/BJJManager.Domain.Tests/BJJManager.Domain.Tests.csproj" />
+    <Project Path="tests/BJJManager.WebApi.IntegrationTests/BJJManager.WebApi.IntegrationTests.csproj" />
+  </Folder>
+</Solution>

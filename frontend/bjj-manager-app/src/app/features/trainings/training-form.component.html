@@ -1,0 +1,71 @@
+<h1>{{ trainingId() ? 'Edit Training' : 'Create Training' }}</h1>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="entity-form">
+  <mat-form-field appearance="outline">
+    <mat-label>Training date</mat-label>
+    <input matInput [matDatepicker]="trainingDatePicker" formControlName="trainingDate" />
+    <mat-datepicker-toggle matIconSuffix [for]="trainingDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #trainingDatePicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Academy name</mat-label>
+    <input matInput formControlName="academyName" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Self evaluation</mat-label>
+    <mat-select formControlName="selfEvaluation">
+      @for (option of selfEvaluationOptions; track option.value) {
+        <mat-option [value]="option.value">{{ option.label }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Notes</mat-label>
+    <textarea matInput formControlName="notes" rows="3"></textarea>
+  </mat-form-field>
+
+  <div class="form-actions">
+    <button mat-flat-button color="primary" type="submit">Save</button>
+  </div>
+</form>
+
+@if (trainingId()) {
+  <section class="media-section">
+    <h2>Media</h2>
+
+    @if (media().length > 0) {
+      <ul class="media-list">
+        @for (item of media(); track item.id) {
+          <li>
+            @if (item.mediaType === 'Image') {
+              <img [src]="item.fileUrl" [alt]="item.fileName" class="media-thumb" />
+            } @else {
+              <mat-icon class="media-thumb-icon">movie</mat-icon>
+            }
+            <span class="media-file-name">{{ item.fileName }}</span>
+            <button mat-icon-button (click)="removeMedia(item.id)" aria-label="Remove media">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="empty-state">No media yet.</p>
+    }
+
+    <div class="media-upload">
+      <input #fileInput type="file" accept="image/*,video/*" hidden (change)="onFileSelected($event)" />
+      <button mat-stroked-button type="button" [disabled]="uploading()" (click)="fileInput.click()">
+        <mat-icon>upload</mat-icon>
+        Upload photo or video
+      </button>
+
+      @if (uploading()) {
+        <mat-progress-bar mode="determinate" [value]="uploadProgress()"></mat-progress-bar>
+      }
+    </div>
+  </section>
+}

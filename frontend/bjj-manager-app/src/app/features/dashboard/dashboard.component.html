@@ -1,0 +1,82 @@
+@if (summary(); as s) {
+  <div class="dashboard-hero">
+    <h1>Welcome, {{ s.userName }}!</h1>
+    <p>Here's a snapshot of your Jiu-Jitsu journey so far.</p>
+  </div>
+
+  <div class="row row-cols-1 row-cols-sm-2 g-3">
+    <div class="col">
+      <mat-card class="stat-card">
+        <div class="stat-icon">
+          <mat-icon>fitness_center</mat-icon>
+        </div>
+        <div>
+          <mat-card-title>{{ s.totalTrainings }}</mat-card-title>
+          <mat-card-subtitle>Total trainings</mat-card-subtitle>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="col">
+      <mat-card class="stat-card">
+        <div class="stat-icon">
+          <mat-icon>self_improvement</mat-icon>
+        </div>
+        <div>
+          <mat-card-title>{{ s.totalTechniques }}</mat-card-title>
+          <mat-card-subtitle>Total techniques</mat-card-subtitle>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  @if (notesSummary(); as ns) {
+    <div class="notes-chart-card">
+      <div class="notes-chart-header">
+        <h2>Daily average note</h2>
+        <span class="notes-chart-subtitle">Last 30 days</span>
+        @if (ns.totalSessions > 0) {
+          <span class="notes-average-badge">
+            {{ ns.overallAverage | number: '1.1-1' }}<span class="stat-unit">/5</span> average
+          </span>
+        }
+      </div>
+
+      @if (ns.dailyNotes.length > 0) {
+        <svg
+          class="notes-line-chart"
+          [attr.viewBox]="'0 0 ' + chartWidth + ' ' + chartHeight"
+          preserveAspectRatio="none"
+          role="img"
+          aria-label="Line chart of daily average training note over the last 30 days"
+        >
+          <line class="notes-axis-line" x1="24" [attr.x2]="chartWidth - 24" [attr.y1]="axisY" [attr.y2]="axisY" />
+
+          @if (averageLineY(); as avgY) {
+            <line class="notes-average-line" x1="24" [attr.x2]="chartWidth - 24" [attr.y1]="avgY" [attr.y2]="avgY" />
+            <text class="notes-average-label" [attr.x]="chartWidth - 24" [attr.y]="avgY - 6" text-anchor="end">
+              average {{ ns.overallAverage | number: '1.1-1' }}
+            </text>
+          }
+
+          <path class="notes-area" [attr.d]="areaPath()"></path>
+          <path class="notes-line" [attr.d]="linePath()"></path>
+
+          @for (point of chartPoints(); track point.note.date) {
+            <text class="notes-x-label" [attr.x]="point.labelX" [attr.y]="point.labelY" text-anchor="middle">
+              {{ point.note.date | date: 'd/M' }}
+            </text>
+            <circle class="notes-dot" [attr.cx]="point.x" [attr.cy]="point.y" r="5">
+              <title>
+                {{ point.note.date | date: 'mediumDate' }} — {{ point.note.averageScore }}/5 ·
+                {{ point.note.sessionCount }} {{ point.note.sessionCount === 1 ? 'session' : 'sessions' }}
+              </title>
+            </circle>
+          }
+        </svg>
+      } @else {
+        <p class="empty-state">No training notes in the last 30 days yet.</p>
+      }
+    </div>
+  }
+}

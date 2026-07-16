@@ -1,0 +1,24 @@
+<mat-toolbar class="app-toolbar">
+  @if (showMenuButton) {
+    <button mat-icon-button (click)="menuToggle.emit()" aria-label="Toggle menu" class="menu-btn">
+      <mat-icon>menu</mat-icon>
+    </button>
+  }
+
+  <div class="brand">
+    <mat-icon class="brand-icon">sports_kabaddi</mat-icon>
+    <span>BJJ Manager</span>
+  </div>
+
+  <span class="spacer"></span>
+
+  @if (isAuthenticated()) {
+    <div class="user-chip">
+      <span class="avatar">{{ avatarInitial() }}</span>
+      <span class="welcome">{{ userName() }}</span>
+    </div>
+    <button mat-icon-button (click)="logout()" aria-label="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+  }
+</mat-toolbar>

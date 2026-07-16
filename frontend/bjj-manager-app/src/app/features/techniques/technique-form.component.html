@@ -1,0 +1,87 @@
+<h1>{{ techniqueId() ? 'Edit Technique' : 'Create Technique' }}</h1>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="entity-form">
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Position</mat-label>
+    <input matInput formControlName="position" list="position-options" />
+  </mat-form-field>
+  <datalist id="position-options">
+    @for (option of positionOptions; track option) {
+      <option [value]="option"></option>
+    }
+  </datalist>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description" rows="3"></textarea>
+  </mat-form-field>
+
+  <h2>Steps</h2>
+  <div formArrayName="steps" class="steps-list">
+    @for (step of steps.controls; track $index) {
+      <div class="step-row">
+        <mat-form-field appearance="outline" class="step-field">
+          <mat-label>Step {{ $index + 1 }}</mat-label>
+          <input matInput [formControlName]="$index" />
+        </mat-form-field>
+        <button
+          mat-icon-button
+          type="button"
+          (click)="removeStep($index)"
+          [disabled]="steps.length === 1"
+          aria-label="Remove step"
+        >
+          <mat-icon>remove_circle_outline</mat-icon>
+        </button>
+      </div>
+    }
+  </div>
+  <button mat-stroked-button type="button" (click)="addStep()">Add step</button>
+
+  <div class="form-actions">
+    <button mat-flat-button color="primary" type="submit">Save</button>
+  </div>
+</form>
+
+@if (techniqueId()) {
+  <section class="media-section">
+    <h2>Media</h2>
+
+    @if (media().length > 0) {
+      <ul class="media-list">
+        @for (item of media(); track item.id) {
+          <li>
+            @if (item.mediaType === 'Image') {
+              <img [src]="item.fileUrl" [alt]="item.fileName" class="media-thumb" />
+            } @else {
+              <mat-icon class="media-thumb-icon">movie</mat-icon>
+            }
+            <span class="media-file-name">{{ item.fileName }}</span>
+            <button mat-icon-button (click)="removeMedia(item.id)" aria-label="Remove media">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="empty-state">No media yet.</p>
+    }
+
+    <div class="media-upload">
+      <input #fileInput type="file" accept="image/*,video/*" hidden (change)="onFileSelected($event)" />
+      <button mat-stroked-button type="button" [disabled]="uploading()" (click)="fileInput.click()">
+        <mat-icon>upload</mat-icon>
+        Upload photo or video
+      </button>
+
+      @if (uploading()) {
+        <mat-progress-bar mode="determinate" [value]="uploadProgress()"></mat-progress-bar>
+      }
+    </div>
+  </section>
+}

@@ -1,0 +1,46 @@
+<div class="page-header">
+  <h1>Techniques</h1>
+  <a mat-flat-button color="primary" routerLink="/techniques/new">New Technique</a>
+</div>
+
+@if (techniques().length === 0) {
+  <p class="empty-state">
+    <mat-icon>self_improvement</mat-icon><br />
+    No techniques yet.
+  </p>
+}
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+  @for (technique of techniques(); track technique.id) {
+    <div class="col">
+      <mat-card class="technique-card">
+        <div class="technique-card-header">
+          <div class="technique-icon">
+            <mat-icon>self_improvement</mat-icon>
+          </div>
+          <div>
+            <h3 class="technique-name">{{ technique.name }}</h3>
+            <span class="position-chip">{{ technique.position }}</span>
+          </div>
+        </div>
+
+        <p class="technique-description">{{ technique.description }}</p>
+
+        <div class="technique-card-footer">
+          <span class="step-count">
+            <mat-icon>format_list_numbered</mat-icon>
+            {{ technique.steps.length }} {{ technique.steps.length === 1 ? 'step' : 'steps' }}
+          </span>
+          <div class="technique-actions">
+            <a mat-icon-button [routerLink]="['/techniques', technique.id, 'edit']" aria-label="Edit technique">
+              <mat-icon>edit</mat-icon>
+            </a>
+            <button mat-icon-button (click)="remove(technique.id)" aria-label="Delete technique">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  }
+</div>
